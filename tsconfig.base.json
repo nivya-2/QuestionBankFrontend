@@ -14,7 +14,12 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@question-bank-workspace/directives": ["libs/directives/src/index.ts"],
+      "@question-bank-workspace/pipes": ["libs/pipes/src/index.ts"],
+      "@question-bank-workspace/shared": ["libs/shared/src/index.ts"],
+      "@question-bank-workspace/shared-ui": ["shared-ui/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
