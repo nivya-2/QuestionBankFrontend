@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // List Interview
-// List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
+// List Interview screen is displayed when user accesses the root of the site.
 
-// Following columns and actions are displayed in the interview table. Data for them will be fetched from GET /api/interviews
+// Following columns and actions are displayed in tabular format. Data for them will be fetched from GET /api/interviews
 // 1. S.No - Auto-generated serial number based on the display index.
 // 2. Role - Displays the interview role.
 // 3. Created On - Date when the interview was created.
