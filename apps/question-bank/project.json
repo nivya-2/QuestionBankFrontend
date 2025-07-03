@@ -20,12 +20,7 @@
             "input": "apps/question-bank/public"
           }
         ],
-        "styles": ["apps/question-bank/src/styles.css"],
-        "server": "apps/question-bank/src/main.server.ts",
-        "ssr": {
-          "entry": "apps/question-bank/src/server.ts"
-        },
-        "outputMode": "server"
+        "styles": ["apps/question-bank/src/styles.css"]
       },
       "configurations": {
         "production": {
