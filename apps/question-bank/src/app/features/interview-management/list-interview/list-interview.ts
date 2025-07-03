@@ -27,6 +27,7 @@ import { CommonModule } from '@angular/common';
 // - Button is disabled during the API operation to prevent multiple calls.
 @Component({
   selector: 'app-list-interview',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './list-interview.html',
   styleUrl: './list-interview.css',

@@ -1,5 +1,4 @@
 import { Route } from '@angular/router';
-import { ListInterview } from './features/interview-management/list-interview/list-interview';
 
 export const appRoutes: Route[] = [
   {
@@ -9,6 +8,8 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'interviews',
-    component: ListInterview
+    loadComponent: () =>
+      import('./features/interview-management/list-interview/list-interview')
+        .then(m => m.ListInterview)
   }
 ];
