@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// List Interview
+// List Interviews
 // List Interview screen is displayed when user accesses the root of the site.
 
 // Following columns and actions are displayed in tabular format. Data for them will be fetched from GET /api/interviews
