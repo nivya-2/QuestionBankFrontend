@@ -8,8 +8,11 @@
   </kendo-grid-column>
 
   <kendo-grid-column field="role" title="Role" [width]="150"></kendo-grid-column>
-  <kendo-grid-column field="createdOn" title="Created On" [width]="150"></kendo-grid-column>
-  <kendo-grid-column field="createdBy" title="Created By" [width]="150"></kendo-grid-column>
+<kendo-grid-column field="createdOn" title="Created On" [width]="150">
+  <ng-template kendoGridCellTemplate let-dataItem>
+    {{ dataItem.createdOn | date: 'mediumDate' }} 
+  </ng-template>
+</kendo-grid-column>  <kendo-grid-column field="createdBy" title="Created By" [width]="150"></kendo-grid-column>
   <kendo-grid-column field="status" title="Status" [width]="120"></kendo-grid-column>
 
   <kendo-grid-column title="Actions" [width]="240">
