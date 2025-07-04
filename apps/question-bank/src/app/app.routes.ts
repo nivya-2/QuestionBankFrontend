@@ -9,7 +9,7 @@ export const appRoutes: Route[] = [
   {
     path: 'interviews',
     loadComponent: () =>
-      import('./features/interview-management/list-interview/list-interview')
+      import('./features/interview-management/components/list-interview/list-interview')
         .then(m => m.ListInterview)
   }
 ];

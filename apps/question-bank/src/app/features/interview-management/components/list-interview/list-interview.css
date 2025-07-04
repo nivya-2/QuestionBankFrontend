@@ -1,0 +1,23 @@
+/* Make buttons wrap on smaller screens */
+.grid-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-start;
+}
+
+.grid-action-buttons button {
+  flex-shrink: 0;
+}
+
+/* Optional: Make buttons stack on extra-small screens */
+@media (max-width: 480px) {
+  .grid-action-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .grid-action-buttons button {
+    width: 100%;
+  }
+}
