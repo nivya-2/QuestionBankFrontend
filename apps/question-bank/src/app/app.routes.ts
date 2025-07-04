@@ -11,5 +11,11 @@ export const appRoutes: Route[] = [
     loadComponent: () =>
       import('./features/interview-management/components/list-interview/list-interview')
         .then(m => m.ListInterview)
+  },
+  {
+    path: 'interviews/:id',
+    loadComponent: () =>
+      import('./features/interview-management/components/interview-details/interview-details')
+        .then(m => m.InterviewDetails)
   }
 ];
