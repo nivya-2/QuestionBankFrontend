@@ -4,7 +4,7 @@ import { By} from '@angular/platform-browser';
 import { of,throwError } from 'rxjs';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
-import { Interview } from '../../models/Interview';
+import { Interview } from '../../models/interview';
 import { provideHttpClient } from '@angular/common/http';
 
 describe('ListInterview Component', () => {

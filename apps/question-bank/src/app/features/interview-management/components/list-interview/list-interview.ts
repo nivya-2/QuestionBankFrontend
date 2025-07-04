@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { InterviewService } from '../../services/get-all-interviews.service.ts'; 
-import { Interview } from '../../models/Interview.js';
+import { Interview } from '../../models/interview.js';
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
 
 // Following columns and actions are displayed in the interview table. Data for them will be fetched from GET /api/interviews
