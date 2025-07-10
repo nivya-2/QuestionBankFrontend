@@ -1,5 +1,8 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { DetailedInterview } from '../../models/detailed-interview';
+import { InterviewService } from '../../services/interview';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 
 // View Interview Details
 // View Interview Details screen is displayed when user clicks the 'View' button against a interview 
@@ -17,8 +20,23 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-interview-details',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule, NgIf, NgFor],
   templateUrl: './interview-details.html',
   styleUrl: './interview-details.css',
 })
-export class InterviewDetails {}
+export class InterviewDetails implements OnInit {
+  private interviewService = inject(InterviewService);
+  private route = inject(ActivatedRoute);
+
+  readonly interview = signal<DetailedInterview | null>(null);
+
+  ngOnInit() {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    if (id) {
+      this.interviewService.getInterviewById(id).subscribe({
+        next: (data) => this.interview.set(data),
+        error: (err) => console.error('Failed to fetch interview details', err),
+      });
+    }
+  }
+}

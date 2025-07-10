@@ -1,4 +1,4 @@
-<div class="center-box">
+<div class="center-box" *ngIf="interview() as data">
     <div class="flex-space-between">
         <h3>Interview Details</h3>
         <div>
@@ -8,29 +8,27 @@
 
     <div class="flex-space-between">
         <div style="margin-bottom: 10px;">
-            <strong>Role:</strong> Frontend Developer
+            <strong>Role:</strong> {{ data.role }}
         </div>
         <div style="margin-bottom: 10px;">
-            <strong>Created By:</strong> John Doe
+            <strong>Created By:</strong> {{ data.createdBy }}
         </div>
     </div>
 
     <div style="margin-bottom: 10px;">
-        <strong>Experience in Years:</strong> 3
+        <strong>Experience in Years:</strong> {{ data.experience }}
     </div>
 
     <div class="flex-space-between">
         <div style="margin-bottom: 10px;">
             <strong>Skills:</strong>
             <ul>
-                <li>Angular</li>
-                <li>TypeScript</li>
-                <li>HTML</li>
+                <li *ngFor = "let skill of data.interviewSkills "> {{ skill }}</li>
             </ul>
         </div>
 
         <div style="margin-bottom: 10px;">
-            <strong>Status:</strong> Draft
+            <strong>Status:</strong> {{ data.interviewStatus }}
         </div>
     </div>
 

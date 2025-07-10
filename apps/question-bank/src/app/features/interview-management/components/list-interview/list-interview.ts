@@ -2,8 +2,9 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
-import { InterviewService } from '../../services/get-all-interviews.service.ts'; 
+import { InterviewService } from '../../services/interview.js'; 
 import { Interview } from '../../models/interview.js';
+import { Router } from '@angular/router';
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
 
 // Following columns and actions are displayed in the interview table. Data for them will be fetched from GET /api/interviews
@@ -26,6 +27,8 @@ import { Interview } from '../../models/interview.js';
 
 export class ListInterview implements OnInit {
   private interviewService = inject(InterviewService);
+  private router = inject(Router);
+
   readonly interviews = signal<Interview[]>([]);
 
   ngOnInit(): void {
@@ -36,7 +39,7 @@ export class ListInterview implements OnInit {
   }
 
   viewInterview(id: number): void {
-    console.log(`Navigate to interview with id: ${id}`);
+    this.router.navigate(['/interviews', id]);
   }
 
   deactivateInterview(interview: Interview): void {
