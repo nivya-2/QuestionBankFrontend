@@ -1,30 +1,45 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ListInterview } from './list-interview';
-import { By} from '@angular/platform-browser';
-import { of,throwError } from 'rxjs';
+import { By } from '@angular/platform-browser';
+import { of, throwError } from 'rxjs';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { Interview } from '../../models/interview';
 import { provideHttpClient } from '@angular/common/http';
 
-describe('ListInterview Component', () => {
+describe('ListInterview Component (Interview list screen)', () => {
   let component: ListInterview;
   let fixture: ComponentFixture<ListInterview>;
 
   const mockInterviews: Interview[] = [
-    { id: 1, role: 'Frontend Developer', createdOn: '2025-07-01', createdBy: 'Alice', status: 'New' },
-    { id: 2, role: 'Backend Developer', createdOn: '2025-07-01', createdBy: 'Bob', status: 'Submitted' },
-    { id: 3, role: 'QA Analyst', createdOn: '2025-07-01', createdBy: 'Carol', status: 'Draft' },
+    {
+      id: 1,
+      role: 'Frontend Developer',
+      createdOn: '2025-07-01',
+      createdBy: 'Alice',
+      status: 'New',
+    },
+    {
+      id: 2,
+      role: 'Backend Developer',
+      createdOn: '2025-07-01',
+      createdBy: 'Bob',
+      status: 'Submitted',
+    },
+    {
+      id: 3,
+      role: 'QA Analyst',
+      createdOn: '2025-07-01',
+      createdBy: 'Carol',
+      status: 'Draft',
+    },
   ];
   const errorResponse = new Error('Network error');
-
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ListInterview, GridModule, ButtonModule],
-       providers: [
-      provideHttpClient()
-    ],
+      providers: [provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(ListInterview);
@@ -40,9 +55,10 @@ describe('ListInterview Component', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the correct number of rows', () => {
-    const gridRows = fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
-    expect(gridRows.length).toBeGreaterThan(1); // header + rows
+  it('should render one row for each interview plus the header row', () => {
+    const gridRows =
+      fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
+    expect(gridRows.length).toBeGreaterThan(1);
   });
 
   it('should render all interview roles', () => {
@@ -52,21 +68,23 @@ describe('ListInterview Component', () => {
     expect(text).toContain('QA Analyst');
   });
 
-  it('should call viewInterview with correct ID when "View" is clicked', () => {
+  it('should call viewInterview function with correct interview ID when the "View" button is clicked', () => {
     const spy = jest.spyOn(component, 'viewInterview');
 
-    const viewButtons = fixture.debugElement.queryAll(By.css('button:not([themeColor="error"])'));
+    const viewButtons = fixture.debugElement.queryAll(
+      By.css('button:not([themeColor="error"])')
+    );
     viewButtons[0].nativeElement.click();
 
     expect(spy).toHaveBeenCalledWith(mockInterviews[0].id);
   });
 
-  it('should update interview status to "Inactive" when "Deactivate" is clicked', () => {
+  it('should update interview status to "Inactive" when "Deactivate" button is clicked', () => {
     const interview = mockInterviews[0];
     expect(interview.status).not.toBe('Inactive');
 
     component.deactivateInterview(interview);
-    const updated = component.interviews().find(i => i.id === interview.id);
+    const updated = component.interviews().find((i) => i.id === interview.id);
 
     expect(updated?.status).toBe('Inactive');
   });
@@ -83,49 +101,60 @@ describe('ListInterview Component', () => {
     component.interviews.set([...component.interviews(), inactiveInterview]);
     fixture.detectChanges();
 
-    const deactivateButtons = fixture.debugElement.queryAll(By.css('button[themeColor="error"]'));
-    const lastButton = deactivateButtons[deactivateButtons.length - 1].nativeElement;
+    const deactivateButtons = fixture.debugElement.queryAll(
+      By.css('button[themeColor="error"]')
+    );
+    const lastButton =
+      deactivateButtons[deactivateButtons.length - 1].nativeElement;
 
     expect(lastButton.disabled).toBe(true);
   });
 
-  it('should handle empty interview list gracefully', () => {
-    component.interviews.set([]);
+    it('should render only the header row when there are no interviews', () => {
+      component.interviews.set([]);
+      fixture.detectChanges();
+      const rows = fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
+      expect(rows.length).toBe(1); // only header row
+    });
+  it('should handle error when fetching interviews fails', async () => {
+    const consoleSpy = jest
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    // Mock the service BEFORE component creation
+    const service = TestBed.inject(component['interviewService'].constructor);
+    jest
+      .spyOn(service, 'getInterviews')
+      .mockReturnValue(throwError(() => errorResponse));
+
+    // Recreate the component AFTER mocking service
+    fixture = TestBed.createComponent(ListInterview);
+    component = fixture.componentInstance;
+
+    fixture.detectChanges(); // triggers ngOnInit()
+
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'Failed to fetch interviews',
+      errorResponse
+    );
+
+    consoleSpy.mockRestore();
+  });
+  it('should fetch interviews and set them via service in ngOnInit()', () => {
+    const mockService = TestBed.inject(
+      component['interviewService'].constructor
+    );
+    const spy = jest
+      .spyOn(mockService, 'getInterviews')
+      .mockReturnValue(of(mockInterviews));
+
+    // Recreate component to re-trigger ngOnInit
+    fixture = TestBed.createComponent(ListInterview);
+    component = fixture.componentInstance;
+
     fixture.detectChanges();
 
-    const rows = fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
-    expect(rows.length).toBe(1); // only header row
+    expect(component.interviews()).toEqual(mockInterviews);
+    expect(spy).toHaveBeenCalled();
   });
- it('should handle error when fetching interviews fails', async () => {
-  const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
-
-  // Mock the service BEFORE component creation
-  const service = TestBed.inject(component['interviewService'].constructor);
-  jest.spyOn(service, 'getInterviews').mockReturnValue(throwError(() => errorResponse));
-
-  // Recreate the component AFTER mocking service
-  fixture = TestBed.createComponent(ListInterview);
-  component = fixture.componentInstance;
-
-  fixture.detectChanges(); // triggers ngOnInit()
-
-  expect(consoleSpy).toHaveBeenCalledWith('Failed to fetch interviews', errorResponse);
-
-  consoleSpy.mockRestore();
-});
-it('should fetch interviews and set them via service in ngOnInit()', () => {
-  const mockService = TestBed.inject(component['interviewService'].constructor);
-  const spy = jest.spyOn(mockService, 'getInterviews').mockReturnValue(of(mockInterviews));
-
-  // Recreate component to re-trigger ngOnInit
-  fixture = TestBed.createComponent(ListInterview);
-  component = fixture.componentInstance;
-
-  fixture.detectChanges();
-
-  expect(component.interviews()).toEqual(mockInterviews);
-  expect(spy).toHaveBeenCalled();
-});
-
-
 });

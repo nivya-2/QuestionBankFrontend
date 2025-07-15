@@ -1,9 +1,10 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule,KENDO_GRID } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
-import { InterviewService } from '../../services/interview-management/get-all-interviews.service'; 
+import { InterviewService } from '../../services/interview-management/get-all-interviews.service';
 import { Interview } from '../../models/interview.js';
+import { InterviewStatus } from '../../enums/interview-status.enum';
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
 
 // Following columns and actions are displayed in the interview table. Data for them will be fetched from GET /api/interviews
@@ -19,12 +20,12 @@ import { Interview } from '../../models/interview.js';
 @Component({
   selector: 'app-list-interview',
   standalone: true,
-  imports: [CommonModule, GridModule, ButtonModule],
+  imports: [CommonModule, GridModule, ButtonModule,KENDO_GRID],
   templateUrl: './list-interview.html',
   styleUrl: './list-interview.css',
 })
-
 export class ListInterview implements OnInit {
+  readonly InterviewStatus = InterviewStatus;
   private interviewService = inject(InterviewService);
   readonly interviews = signal<Interview[]>([]);
 
@@ -35,14 +36,26 @@ export class ListInterview implements OnInit {
     });
   }
 
+  /**
+   * Should navigate to the interview details screen for the selected interview.
+   *
+   * @param id - The unique identifier of the interview to view.
+   */
   viewInterview(id: number): void {
     console.log(`Navigate to interview with id: ${id}`);
   }
 
+  /**
+   * Marks the clicked interview as 'Inactive' by updating its status in the interviews signal.
+   *
+   * @param interview - The interview object to deactivate.
+   */
   deactivateInterview(interview: Interview): void {
-    this.interviews.update((all) =>
-      all.map((i) =>
-        i.id === interview.id ? { ...i, status: 'Inactive' } : i
+    this.interviews.update((interviewList) =>
+      interviewList.map((existingInterview) =>
+        existingInterview.id === interview.id
+          ? { ...existingInterview, status: InterviewStatus.Inactive }
+          : existingInterview
       )
     );
   }

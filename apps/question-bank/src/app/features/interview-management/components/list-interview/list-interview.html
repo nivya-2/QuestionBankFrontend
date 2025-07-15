@@ -1,32 +1,58 @@
 <h3>Interview List</h3>
 
-<kendo-grid [data]="interviews()" [resizable]="true">
-  <kendo-grid-column field="id" title="S.No" [width]="80">
-    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-      {{ rowIndex + 1 }}
-    </ng-template>
-  </kendo-grid-column>
+<ng-container *ngIf="interviews() as interviewList">
+  <kendo-grid [data]="interviewList" [resizable]="true" id="interview-grid">
+    <kendo-grid-column field="id" title="S.No" [width]="80">
+      <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
+        {{ rowIndex + 1 }}
+      </ng-template>
+    </kendo-grid-column>
 
-  <kendo-grid-column field="role" title="Role" [width]="150"></kendo-grid-column>
-<kendo-grid-column field="createdOn" title="Created On" [width]="150">
-  <ng-template kendoGridCellTemplate let-dataItem>
-    {{ dataItem.createdOn | date: 'mediumDate' }} 
+    <kendo-grid-column
+      field="role"
+      title="Role"
+      [width]="150"
+    ></kendo-grid-column>
+    <kendo-grid-column field="createdOn" title="Created On" [width]="150">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        {{ dataItem.createdOn | date: 'mediumDate' }}
+      </ng-template>
+    </kendo-grid-column>
+    <kendo-grid-column
+      field="createdBy"
+      title="Created By"
+      [width]="150"
+    ></kendo-grid-column>
+    <kendo-grid-column
+      field="status"
+      title="Status"
+      [width]="120"
+    ></kendo-grid-column>
+
+    <kendo-grid-column title="Actions" [width]="240">
+      <ng-template kendoGridCellTemplate let-dataItem>
+        <div class="grid-action-buttons">
+          <button
+            kendoButton
+            id="view-btn-{{ dataItem.id }}"
+            (click)="viewInterview(dataItem.id)"
+          >
+            View
+          </button>
+          <button
+            kendoButton
+            id="deactivate-btn-{{ dataItem.id }}"
+            themeColor="error"
+            (click)="deactivateInterview(dataItem)"
+            [disabled]="dataItem.status === InterviewStatus.Inactive"
+          >
+            Deactivate
+          </button>
+        </div>
+      </ng-template>
+    </kendo-grid-column>
+    <ng-template kendoGridNoRecordsTemplate>
+    <div id="no-interviews-message">No interviews available. Please add an interview.</div>
   </ng-template>
-</kendo-grid-column>  <kendo-grid-column field="createdBy" title="Created By" [width]="150"></kendo-grid-column>
-  <kendo-grid-column field="status" title="Status" [width]="120"></kendo-grid-column>
-
-  <kendo-grid-column title="Actions" [width]="240">
-    <ng-template kendoGridCellTemplate let-dataItem>
-      <div class="grid-action-buttons">
-        <button kendoButton (click)="viewInterview(dataItem.id)">View</button>
-        <button
-          kendoButton
-          themeColor="error"
-          (click)="deactivateInterview(dataItem)"
-          [disabled]="dataItem.status === 'Inactive'">
-          Deactivate
-        </button>
-      </div>
-    </ng-template>
-  </kendo-grid-column>
-</kendo-grid>
+  </kendo-grid>
+</ng-container>
