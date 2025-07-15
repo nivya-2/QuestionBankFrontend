@@ -1,6 +1,6 @@
 import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GridModule,KENDO_GRID } from '@progress/kendo-angular-grid';
+import { GridModule, KENDO_GRID } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { InterviewService } from '../../services/interview-management/get-all-interviews.service';
 import { Interview } from '../../models/interview.js';
@@ -20,7 +20,7 @@ import { InterviewStatus } from '../../enums/interview-status.enum';
 @Component({
   selector: 'app-list-interview',
   standalone: true,
-  imports: [CommonModule, GridModule, ButtonModule,KENDO_GRID],
+  imports: [CommonModule, GridModule, ButtonModule, KENDO_GRID],
   templateUrl: './list-interview.html',
   styleUrl: './list-interview.css',
 })

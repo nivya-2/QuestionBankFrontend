@@ -110,12 +110,12 @@ describe('ListInterview Component (Interview list screen)', () => {
     expect(lastButton.disabled).toBe(true);
   });
 
-    it('should render only the header row when there are no interviews', () => {
-      component.interviews.set([]);
-      fixture.detectChanges();
-      const rows = fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
-      expect(rows.length).toBe(1); // only header row
-    });
+  it('should render only the header row when there are no interviews', () => {
+    component.interviews.set([]);
+    fixture.detectChanges();
+    const rows = fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
+    expect(rows.length).toBe(1); // only header row
+  });
   it('should handle error when fetching interviews fails', async () => {
     const consoleSpy = jest
       .spyOn(console, 'error')
