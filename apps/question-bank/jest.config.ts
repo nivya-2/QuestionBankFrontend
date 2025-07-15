@@ -1,7 +1,6 @@
 export default {
   displayName: 'question-bank',
   preset: '../../jest.preset.js',
-  // setupFiles: ['<rootDir>/src/test-setup.ts'],
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../coverage/apps/question-bank',
   transform: {
