@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GridModule, KENDO_GRID } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
@@ -27,11 +27,11 @@ import { InterviewStatus } from '../../enums/interview-status.enum';
 export class ListInterview implements OnInit {
   readonly interviewStatus = InterviewStatus;
   private interviewService = inject(InterviewService);
-  readonly interviews = signal<Interview[]>([]);
+  interviews: Interview[] = [];
 
   ngOnInit(): void {
     this.interviewService.getInterviews().subscribe({
-      next: (data) => this.interviews.set(data),
+      next: (data) => (this.interviews = data),
       error: (err) => console.error('Failed to fetch interviews', err),
     });
   }
@@ -52,12 +52,10 @@ export class ListInterview implements OnInit {
    */
   deactivateInterview(interview: Interview): void {
     //api call
-    this.interviews.update((interviewList) =>
-      interviewList.map((existingInterview) =>
-        existingInterview.id === interview.id
-          ? { ...existingInterview, status: InterviewStatus.INACTIVE }
-          : existingInterview
-      )
+    this.interviews = this.interviews.map((existingInterview) =>
+      existingInterview.id === interview.id
+        ? { ...existingInterview, status: InterviewStatus.INACTIVE }
+        : existingInterview
     );
   }
 }

@@ -90,7 +90,7 @@ describe('ListInterview Component (Interview list screen)', () => {
     expect(interview.status).not.toBe('Inactive');
 
     component.deactivateInterview(interview);
-    const updated = component.interviews().find((i) => i.id === interview.id);
+    const updated = component.interviews.find((i) => i.id === interview.id);
 
     expect(updated?.status).toBe('Inactive');
   });
@@ -104,7 +104,7 @@ describe('ListInterview Component (Interview list screen)', () => {
       status: 'Inactive',
     };
 
-    component.interviews.set([...component.interviews(), inactiveInterview]);
+    component.interviews = [...component.interviews, inactiveInterview];
     fixture.detectChanges();
 
     const deactivateButtons = fixture.debugElement.queryAll(
@@ -117,7 +117,7 @@ describe('ListInterview Component (Interview list screen)', () => {
   });
 
   it('should render only the header row when there are no interviews', () => {
-    component.interviews.set([]);
+    component.interviews = [];
     fixture.detectChanges();
     const rows = fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
     expect(rows.length).toBe(1);
@@ -146,12 +146,14 @@ describe('ListInterview Component (Interview list screen)', () => {
   });
 
   it('should fetch interviews and set them via service in ngOnInit()', () => {
-    const mockService = TestBed.inject(InterviewService) as jest.Mocked<InterviewService>;
+    const mockService = TestBed.inject(
+      InterviewService
+    ) as jest.Mocked<InterviewService>;
     const spy = mockService.getInterviews;
 
     createComponent();
 
-    expect(component.interviews()).toEqual(mockInterviews);
+    expect(component.interviews).toEqual(mockInterviews);
     expect(spy).toHaveBeenCalled();
   });
 });
