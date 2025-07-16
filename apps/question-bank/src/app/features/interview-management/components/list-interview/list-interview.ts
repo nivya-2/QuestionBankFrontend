@@ -25,7 +25,7 @@ import { InterviewStatus } from '../../enums/interview-status.enum';
   styleUrl: './list-interview.css',
 })
 export class ListInterview implements OnInit {
-  readonly InterviewStatus = InterviewStatus;
+  readonly interviewStatus = InterviewStatus;
   private interviewService = inject(InterviewService);
   readonly interviews = signal<Interview[]>([]);
 
@@ -42,7 +42,7 @@ export class ListInterview implements OnInit {
    * @param id - The unique identifier of the interview to view.
    */
   viewInterview(id: number): void {
-    console.log(`Navigate to interview with id: ${id}`);
+    // Logic to navigate to interview details screen
   }
 
   /**
@@ -51,10 +51,11 @@ export class ListInterview implements OnInit {
    * @param interview - The interview object to deactivate.
    */
   deactivateInterview(interview: Interview): void {
+    //api call
     this.interviews.update((interviewList) =>
       interviewList.map((existingInterview) =>
         existingInterview.id === interview.id
-          ? { ...existingInterview, status: InterviewStatus.Inactive }
+          ? { ...existingInterview, status: InterviewStatus.INACTIVE }
           : existingInterview
       )
     );

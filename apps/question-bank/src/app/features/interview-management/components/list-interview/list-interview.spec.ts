@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { Interview } from '../../models/interview';
-import { provideHttpClient } from '@angular/common/http';
+import { InterviewService } from '../../services/interview-management/get-all-interviews.service';
 
 describe('ListInterview Component (Interview list screen)', () => {
   let component: ListInterview;
@@ -36,19 +36,25 @@ describe('ListInterview Component (Interview list screen)', () => {
   ];
   const errorResponse = new Error('Network error');
 
+  class MockInterviewService {
+    getInterviews = jest.fn().mockReturnValue(of(mockInterviews));
+  }
+
+  function createComponent() {
+    fixture = TestBed.createComponent(ListInterview);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  }
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ListInterview, GridModule, ButtonModule],
-      providers: [provideHttpClient()],
+      providers: [
+        { provide: InterviewService, useClass: MockInterviewService },
+      ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ListInterview);
-    component = fixture.componentInstance;
-
-    // Manually inject mock interview data into signal
-    component.interviews.set(mockInterviews);
-
-    fixture.detectChanges();
+    createComponent();
   });
 
   it('should create the component', () => {
@@ -114,24 +120,22 @@ describe('ListInterview Component (Interview list screen)', () => {
     component.interviews.set([]);
     fixture.detectChanges();
     const rows = fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
-    expect(rows.length).toBe(1); // only header row
+    expect(rows.length).toBe(1);
   });
-  it('should handle error when fetching interviews fails', async () => {
+
+  it('should handle error when fetching interviews fails', () => {
     const consoleSpy = jest
       .spyOn(console, 'error')
       .mockImplementation(() => {});
 
-    // Mock the service BEFORE component creation
-    const service = TestBed.inject(component['interviewService'].constructor);
-    jest
-      .spyOn(service, 'getInterviews')
-      .mockReturnValue(throwError(() => errorResponse));
+    const mockService = TestBed.inject(
+      InterviewService
+    ) as jest.Mocked<InterviewService>;
+    mockService.getInterviews.mockReturnValueOnce(
+      throwError(() => errorResponse)
+    );
 
-    // Recreate the component AFTER mocking service
-    fixture = TestBed.createComponent(ListInterview);
-    component = fixture.componentInstance;
-
-    fixture.detectChanges(); // triggers ngOnInit()
+    createComponent();
 
     expect(consoleSpy).toHaveBeenCalledWith(
       'Failed to fetch interviews',
@@ -140,19 +144,12 @@ describe('ListInterview Component (Interview list screen)', () => {
 
     consoleSpy.mockRestore();
   });
+
   it('should fetch interviews and set them via service in ngOnInit()', () => {
-    const mockService = TestBed.inject(
-      component['interviewService'].constructor
-    );
-    const spy = jest
-      .spyOn(mockService, 'getInterviews')
-      .mockReturnValue(of(mockInterviews));
+    const mockService = TestBed.inject(InterviewService) as jest.Mocked<InterviewService>;
+    const spy = mockService.getInterviews;
 
-    // Recreate component to re-trigger ngOnInit
-    fixture = TestBed.createComponent(ListInterview);
-    component = fixture.componentInstance;
-
-    fixture.detectChanges();
+    createComponent();
 
     expect(component.interviews()).toEqual(mockInterviews);
     expect(spy).toHaveBeenCalled();
