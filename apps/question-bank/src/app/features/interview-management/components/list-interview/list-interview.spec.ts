@@ -151,7 +151,6 @@ describe('ListInterview Component (Interview list screen)', () => {
   it('should fetch interviews and set them via the service', () => {
     const { component, interviewService } = createComponent();
     const spy = jest.spyOn(interviewService, 'getInterviews');
-    createComponent();
     expect(component.interviews).toEqual(mockInterviews);
     expect(spy).toHaveBeenCalled();
   });
