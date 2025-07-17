@@ -91,23 +91,19 @@ describe('ListInterview Component (Interview list screen)', () => {
   it('should pass the correct Interview ID when "View" button is clicked', () => {
     const { component, fixture } = createComponent();
     const spy = jest.spyOn(component, 'viewInterview');
-
     const viewButtons = fixture.debugElement.queryAll(
       By.css('button:not([themeColor="error"])')
     );
     viewButtons[0].nativeElement.click();
-
     expect(spy).toHaveBeenCalledWith(mockInterviews[0].id);
   });
 
   it('should update interview status to "Inactive" when "Deactivate" button is clicked', () => {
     const { component } = createComponent();
-
     const interview = mockInterviews[0];
     interview.status = 'Active';
     component.deactivateInterview(interview);
     const updated = component.interviews.find((i) => i.id === interview.id);
-
     expect(updated?.status).toBe('Inactive');
   });
 
@@ -120,22 +116,18 @@ describe('ListInterview Component (Interview list screen)', () => {
       status: 'Inactive',
     };
     const { component, fixture } = createComponent();
-
     component.interviews = [...component.interviews, inactiveInterview];
     fixture.detectChanges();
-
     const deactivateButtons = fixture.debugElement.queryAll(
       By.css('button[themeColor="error"]')
     );
     const lastDeactivateButton =
       deactivateButtons[deactivateButtons.length - 1].nativeElement;
-
     expect(lastDeactivateButton.disabled).toBe(true);
   });
 
   it('should display only the header row when there are no interviews', () => {
     const { component, fixture } = createComponent();
-
     component.interviews = [];
     fixture.detectChanges();
     const rows = fixture.nativeElement.querySelectorAll('kendo-grid-list tr');
@@ -148,23 +140,18 @@ describe('ListInterview Component (Interview list screen)', () => {
     const consoleSpy = jest
       .spyOn(console, 'error')
       .mockImplementation(() => {});
-
     component.ngOnInit();
-
     expect(consoleSpy).toHaveBeenCalledWith(
       'Failed to fetch interviews',
       errorResponse
     );
-
     consoleSpy.mockRestore();
   });
 
   it('should fetch interviews and set them via the service', () => {
     const { component, interviewService } = createComponent();
     const spy = jest.spyOn(interviewService, 'getInterviews');
-
     createComponent();
-
     expect(component.interviews).toEqual(mockInterviews);
     expect(spy).toHaveBeenCalled();
   });
