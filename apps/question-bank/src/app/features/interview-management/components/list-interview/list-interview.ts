@@ -5,6 +5,8 @@ import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { InterviewService } from '../../services/interview-management/get-all-interviews.service';
 import { Interview } from '../../models/interview.js';
 import { InterviewStatus } from '../../enums/interview-status.enum';
+import { NotificationModule, NotificationService } from '@progress/kendo-angular-notification';
+
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
 
 // Following columns and actions are displayed in the interview table. Data for them will be fetched from GET /api/interviews
@@ -20,19 +22,30 @@ import { InterviewStatus } from '../../enums/interview-status.enum';
 @Component({
   selector: 'app-list-interview',
   standalone: true,
-  imports: [CommonModule, GridModule, ButtonModule, KENDO_GRID],
+  imports: [CommonModule, GridModule, ButtonModule, KENDO_GRID,NotificationModule],
   templateUrl: './list-interview.html',
   styleUrl: './list-interview.css',
 })
 export class ListInterview implements OnInit {
   readonly interviewStatus = InterviewStatus;
   private interviewService = inject(InterviewService);
+  private notificationService = inject(NotificationService);
   interviews: Interview[] = [];
 
   ngOnInit(): void {
     this.interviewService.getInterviews().subscribe({
       next: (data) => (this.interviews = data),
-      error: (err) => console.error('Failed to fetch interviews', err),
+      error: (err) => {
+        console.error('Failed to fetch interviews', err);
+        this.notificationService.show({
+          content: 'Failed to load interviews. Please check your connection.',
+          cssClass: 'k-notification-custom-large',
+          animation: { type: 'fade', duration: 400 },
+          position: { horizontal: 'right', vertical: 'top' },
+          type: { style: 'error', icon: true },
+          hideAfter: 5000,
+        });
+      },      
     });
   }
 
@@ -51,7 +64,7 @@ export class ListInterview implements OnInit {
    * @param interview - The interview object to deactivate.
    */
   deactivateInterview(interview: Interview): void {
-    //api call
+    //api call placeholder
     this.interviews = this.interviews.map((existingInterview) =>
       existingInterview.id === interview.id
         ? { ...existingInterview, status: InterviewStatus.INACTIVE }

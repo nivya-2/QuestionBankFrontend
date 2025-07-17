@@ -6,11 +6,11 @@ import { Interview } from '../../models/interview';
   providedIn: 'root'
 })
 export class InterviewService {
-  private apiUrl = 'https://localhost:7215/api/interviews';
+  private privateapiBasePath= 'https://localhost:7215/api';
 
   constructor(private http: HttpClient) {}
 
   getInterviews(): Observable<Interview[]> {
-    return this.http.get<Interview[]>(this.apiUrl);
+    return this.http.get<Interview[]>(`${this.privateapiBasePath}/interviews`);
   }
 }

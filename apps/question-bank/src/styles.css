@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+.k-notification-error.k-notification-custom-large {
+  font-size: 16px;
+  padding: 10px;
+  line-height: 1.5;
+  display: flex;
+  justify-content: space-between;
+  max-width: 300px;
+  font-family: Arial, sans-serif;
+}
+.k-notification-error.k-notification-custom-large kendo-icon-wrapper kendo-svgicon{
+    width: 50px;
+    margin-right: 10px;
+}

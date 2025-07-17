@@ -32,6 +32,7 @@
     "@progress/kendo-angular-label": "^19.2.0",
     "@progress/kendo-angular-layout": "^19.2.0",
     "@progress/kendo-angular-navigation": "^19.2.0",
+    "@progress/kendo-angular-notification": "^19.2.0",
     "@progress/kendo-angular-pager": "^19.2.0",
     "@progress/kendo-angular-pdf-export": "^19.2.0",
     "@progress/kendo-angular-popup": "^19.2.0",

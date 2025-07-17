@@ -1,7 +1,7 @@
 <h3>Interview List</h3>
 
-@if (interviews; as interviewList) {
-  <kendo-grid [data]="interviewList" [resizable]="true" id="interview-grid">
+@if (interviews; as interviews) {
+  <kendo-grid [data]="interviews" [resizable]="true" id="interview-grid">
     <kendo-grid-column field="id" title="S.No" [width]="80">
       <ng-template kendoGridCellTemplate let-rowIndex="rowIndex">
         {{ rowIndex + 1 }}
