@@ -20,7 +20,10 @@
             "input": "apps/question-bank/public"
           }
         ],
-        "styles": ["apps/question-bank/src/styles.css"]
+        "styles": [
+          "node_modules/@progress/kendo-theme-default/dist/all.css",
+          "apps/question-bank/src/styles.css"
+        ]
       },
       "configurations": {
         "production": {
