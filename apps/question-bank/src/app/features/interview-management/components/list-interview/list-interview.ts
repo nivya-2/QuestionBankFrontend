@@ -2,7 +2,7 @@ import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
-import { InterviewService } from '../../services/interview.js'; 
+import { InterviewService } from '../../services/interview.service.js'; 
 import { Interview } from '../../models/interview.js';
 import { Router } from '@angular/router';
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.

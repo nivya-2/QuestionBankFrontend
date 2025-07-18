@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InterviewDetails } from './interview-details';
 import { DetailedInterview } from '../../models/detailed-interview';
 import { provideHttpClient } from '@angular/common/http';
-import { InterviewService } from '../../services/interview';
+import { InterviewService } from '../../services/interview.service';
 import { ActivatedRoute } from '@angular/router';
 import { of, throwError } from 'rxjs';
 

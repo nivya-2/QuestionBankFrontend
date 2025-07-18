@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { DetailedInterview } from '../../models/detailed-interview';
-import { InterviewService } from '../../services/interview';
+import { InterviewService } from '../../services/interview.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 
 // View Interview Details
@@ -20,7 +20,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-interview-details',
-  imports: [CommonModule, RouterModule, NgIf, NgFor],
+  imports: [CommonModule, RouterModule],
   templateUrl: './interview-details.html',
   styleUrl: './interview-details.css',
 })

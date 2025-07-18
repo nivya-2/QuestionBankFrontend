@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { InterviewService } from './interview.js';
+import { InterviewService } from './interview.service.js';
 import { Interview } from '../models/interview.js';
 import { DetailedInterview } from '../models/detailed-interview.js';
 

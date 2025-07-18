@@ -23,7 +23,10 @@
         <div style="margin-bottom: 10px;">
             <strong>Skills:</strong>
             <ul>
-                <li *ngFor = "let skill of data.interviewSkills "> {{ skill }}</li>
+                @for(skill of data.interviewSkills; track skill){
+                    <li>{{ skill }}</li>
+                }
+                <!-- <li *ngFor = "let skill of data.interviewSkills "> {{ skill }}</li> -->
             </ul>
         </div>
 
