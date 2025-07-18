@@ -4,7 +4,6 @@ import { InterviewService } from './interview.service.js';
 import { Interview } from '../models/interview.js';
 import { DetailedInterview } from '../models/detailed-interview.js';
 
-
 describe('InterviewService', () => {
   let service: InterviewService;
   let httpMock: HttpTestingController;

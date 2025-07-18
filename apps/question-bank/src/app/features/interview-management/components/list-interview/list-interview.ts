@@ -1,9 +1,12 @@
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GridModule } from '@progress/kendo-angular-grid';
+import { GridModule, KENDO_GRID } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
-import { InterviewService } from '../../services/interview.service.js'; 
+import { InterviewService } from '../../services/interview.service';
 import { Interview } from '../../models/interview.js';
+import { InterviewStatus } from '../../enums/interview-status.enum';
+import { NotificationModule, NotificationService } from '@progress/kendo-angular-notification';
+
 import { Router } from '@angular/router';
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
 
@@ -20,33 +23,55 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-list-interview',
   standalone: true,
-  imports: [CommonModule, GridModule, ButtonModule],
+  imports: [CommonModule, GridModule, ButtonModule, KENDO_GRID,NotificationModule],
   templateUrl: './list-interview.html',
   styleUrl: './list-interview.css',
 })
-
 export class ListInterview implements OnInit {
+  readonly interviewStatus = InterviewStatus;
   private interviewService = inject(InterviewService);
   private router = inject(Router);
 
-  readonly interviews = signal<Interview[]>([]);
+  private notificationService = inject(NotificationService);
+  interviews: Interview[] = [];
 
   ngOnInit(): void {
     this.interviewService.getInterviews().subscribe({
-      next: (data) => this.interviews.set(data),
-      error: (err) => console.error('Failed to fetch interviews', err),
+      next: (data) => (this.interviews = data),
+      error: (err) => {
+        console.error('Failed to fetch interviews', err);
+        this.notificationService.show({
+          content: 'Failed to load interviews. Please check your connection.',
+          cssClass: 'k-notification-custom-large',
+          animation: { type: 'fade', duration: 400 },
+          position: { horizontal: 'right', vertical: 'top' },
+          type: { style: 'error', icon: true },
+          hideAfter: 5000,
+        });
+      },      
     });
   }
 
+  /**
+   * Should navigate to the interview details screen for the selected interview.
+   *
+   * @param id - The unique identifier of the interview to view.
+   */
   viewInterview(id: number): void {
     this.router.navigate(['/interviews', id]);
   }
 
+  /**
+   * Marks the clicked interview as 'Inactive' by updating its status in the interviews signal.
+   *
+   * @param interview - The interview object to deactivate.
+   */
   deactivateInterview(interview: Interview): void {
-    this.interviews.update((all) =>
-      all.map((i) =>
-        i.id === interview.id ? { ...i, status: 'Inactive' } : i
-      )
+    //api call placeholder
+    this.interviews = this.interviews.map((existingInterview) =>
+      existingInterview.id === interview.id
+        ? { ...existingInterview, status: InterviewStatus.INACTIVE }
+        : existingInterview
     );
   }
 }

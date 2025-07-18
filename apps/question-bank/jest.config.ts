@@ -1,7 +1,6 @@
 export default {
   displayName: 'question-bank',
   preset: '../../jest.preset.js',
-  // setupFiles: ['<rootDir>/src/test-setup.ts'],
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../coverage/apps/question-bank',
   transform: {
@@ -19,6 +18,5 @@ export default {
     'jest-preset-angular/build/serializers/ng-snapshot',
     'jest-preset-angular/build/serializers/html-comment',
   ],
-  collectCoverage: true,
-  coverageReporters: ['text', 'lcov', 'html'],
+  coverageReporters: ['text'],
 };
