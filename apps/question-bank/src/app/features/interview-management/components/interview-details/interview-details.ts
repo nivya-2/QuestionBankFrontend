@@ -1,11 +1,25 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { CommonModule, NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { DetailedInterview } from '../../models/detailed-interview';
 import { InterviewService } from '../../services/interview.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  InputsModule,
+  NumericTextBoxModule,
+} from '@progress/kendo-angular-inputs';
+import { ButtonsModule } from '@progress/kendo-angular-buttons';
+import { LabelModule } from '@progress/kendo-angular-label';
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { NotificationService } from '@progress/kendo-angular-notification';
 
 // View Interview Details
-// View Interview Details screen is displayed when user clicks the 'View' button against a interview 
+// View Interview Details screen is displayed when user clicks the 'View' button against a interview
 // on the List Interview screen.
 
 // Following details are displayed. Data for them will be fetched from GET /api/interviews/{id}
@@ -20,23 +34,68 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-interview-details',
-  imports: [CommonModule, RouterModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+    InputsModule,
+    LabelModule,
+    ButtonsModule,
+    NumericTextBoxModule,
+    DropDownsModule,
+  ],
   templateUrl: './interview-details.html',
   styleUrl: './interview-details.css',
 })
 export class InterviewDetails implements OnInit {
+  interviewForm!: FormGroup;
+  isEdit = false;
+
   private interviewService = inject(InterviewService);
   private route = inject(ActivatedRoute);
+  private fb = inject(FormBuilder);
+  private notificationService = inject(NotificationService);
 
+  readonly allSkills = ['Angular', 'TypeScript', 'RxJS', 'NgRx', 'HTML', 'CSS'];
   readonly interview = signal<DetailedInterview | null>(null);
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.interviewService.getInterviewById(id).subscribe({
-        next: (data) => this.interview.set(data),
-        error: (err) => console.error('Failed to fetch interview details', err),
+        next: (data) => {
+          this.interview.set(data);
+          this.buildForm(data);
+        },
+        error: (err) => {
+          console.error('Failed to fetch interview details', err);
+          this.notificationService.show({
+            content: 'Failed to fetch interview details. Please check your connection.',
+            cssClass: 'k-notification-custom-large',
+            animation: { type: 'fade', duration: 400 },
+            position: { horizontal: 'right', vertical: 'top' },
+            type: { style: 'error', icon: true },
+            hideAfter: 5000,
+          });
+        },
       });
     }
+  }
+  private buildForm(data: DetailedInterview) {
+    this.interviewForm = this.fb.group({
+      role: [{ value: data.role, disabled: true }],
+      createdBy: [{ value: data.createdBy, disabled: true }],
+      experience: [{ value: data.experience, disabled: true }],
+      interviewSkills: [{ value: data.interviewSkills, disabled: true }],
+      interviewStatus: [{ value: data.interviewStatus, disabled: true }],
+    });
+  }
+  toggleEdit() {
+    this.isEdit = !this.isEdit;
+    const method = this.isEdit ? 'enable' : 'disable';
+    Object.values(this.interviewForm.controls).forEach((control) =>
+      control[method]()
+    );
   }
 }
