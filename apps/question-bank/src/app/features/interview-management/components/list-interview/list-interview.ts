@@ -6,6 +6,7 @@ import { InterviewService } from '../../services/interview.service';
 import { Interview } from '../../models/interview.js';
 import { InterviewStatus } from '../../enums/interview-status.enum';
 import { NotificationModule, NotificationService } from '@progress/kendo-angular-notification';
+import { Button } from '@question-bank-workspace/ui';
 
 import { Router } from '@angular/router';
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
@@ -23,11 +24,12 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-list-interview',
   standalone: true,
-  imports: [CommonModule, GridModule, ButtonModule, KENDO_GRID,NotificationModule],
+  imports: [CommonModule, GridModule, ButtonModule, KENDO_GRID,NotificationModule,Button],
   templateUrl: './list-interview.html',
   styleUrl: './list-interview.css',
 })
 export class ListInterview implements OnInit {
+  isSaving = false;
   readonly interviewStatus = InterviewStatus;
   private interviewService = inject(InterviewService);
   private router = inject(Router);
@@ -59,6 +61,14 @@ export class ListInterview implements OnInit {
    */
   viewInterview(id: number): void {
     this.router.navigate(['/interviews', id]);
+  }
+
+  /**
+   * Should navigate to the add interviews screen.
+   *
+   */
+  handleSave(): void {
+    this.router.navigate(['/interviews/add']);
   }
 
   /**

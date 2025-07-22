@@ -1,4 +1,11 @@
 <h3>Interview List</h3>
+<lib-button
+  label="Save"
+  variant="primary"
+  [disabled]="isSaving"
+  icon="fa fa-save"
+  (clicked)="handleSave()"
+></lib-button>
 
 <kendo-grid [data]="interviews" [resizable]="true" id="interview-grid">
   <kendo-grid-column field="id" title="S.No" [width]="80">
