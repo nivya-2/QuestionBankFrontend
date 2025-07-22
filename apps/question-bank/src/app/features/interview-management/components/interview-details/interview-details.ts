@@ -71,7 +71,8 @@ export class InterviewDetails implements OnInit {
         error: (err) => {
           console.error('Failed to fetch interview details', err);
           this.notificationService.show({
-            content: 'Failed to fetch interview details. Please check your connection.',
+            content:
+              'Failed to fetch interview details. Please check your connection.',
             cssClass: 'k-notification-custom-large',
             animation: { type: 'fade', duration: 400 },
             position: { horizontal: 'right', vertical: 'top' },
@@ -82,6 +83,11 @@ export class InterviewDetails implements OnInit {
       });
     }
   }
+
+  /**
+   * Builds a read-only form using interview data.
+   * @param data - Interview details
+   */
   private buildForm(data: DetailedInterview) {
     this.interviewForm = this.fb.group({
       role: [{ value: data.role, disabled: true }],
@@ -91,6 +97,10 @@ export class InterviewDetails implements OnInit {
       interviewStatus: [{ value: data.interviewStatus, disabled: true }],
     });
   }
+
+  /**
+   * Toggles form controls between editable and read-only.
+   */
   toggleEdit() {
     this.isEdit = !this.isEdit;
     const method = this.isEdit ? 'enable' : 'disable';
