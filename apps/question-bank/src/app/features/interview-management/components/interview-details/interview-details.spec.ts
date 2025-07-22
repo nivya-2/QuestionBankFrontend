@@ -105,15 +105,16 @@ describe('InterviewDetails Component (Interview details screen)', () => {
     expect(spyShowNotification).toHaveBeenCalled();
   });
 
-  it('should toggle edit mode and enable/disable form controls', ()=>{
-    const {component} =createComponent();
+  it('should toggle edit mode and enable/disable form controls', () => {
+    const { component } = createComponent();
 
-    const isInitiallyDisabled = component.interviewForm.controls['role'].disabled;
+    const isInitiallyDisabled =
+      component.interviewForm.controls['role'].disabled;
     expect(isInitiallyDisabled).toBe(true);
 
     component.toggleEdit();
     expect(component.interviewForm.controls['role'].enabled).toBe(true);
-    
+
     component.toggleEdit();
     expect(component.interviewForm.controls['role'].disabled).toBe(true);
   });

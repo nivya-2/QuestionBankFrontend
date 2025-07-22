@@ -1,13 +1,13 @@
 .center-box {
-    max-width: 600px;
-    margin: 80px auto;
-    padding: 20px;
-    border: 1px solid #000;
-    border-radius: 8px;
+  max-width: 600px;
+  margin: 80px auto;
+  padding: 20px;
+  border: 1px solid #000;
+  border-radius: 8px;
 }
 
 .bottom-button {
-    text-align: right;
+  text-align: right;
 }
 .form-header {
   display: flex;
