@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { InterviewService } from './get-all-interviews.service';
-import { Interview } from '../../models/interview.js';
+import { InterviewService } from './interview.service.js';
+import { Interview } from '../models/interview.js';
+import { DetailedInterview } from '../models/detailed-interview.js';
 
 describe('InterviewService', () => {
   let service: InterviewService;
@@ -24,6 +25,14 @@ describe('InterviewService', () => {
     }
   ];
 
+   const mockInterviewById: DetailedInterview = {
+    role: 'Frontend Developer',
+    createdBy: 'John Doe',
+    experience: 3,
+    interviewStatus: 'Draft',
+    interviewSkills: ['Angular', 'TypeScript', 'HTML']
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
@@ -35,7 +44,7 @@ describe('InterviewService', () => {
   });
 
   afterEach(() => {
-    httpMock.verify(); // ✅ Ensure no unmatched requests
+    httpMock.verify(); 
   });
 
   it('should be created', () => {
@@ -50,5 +59,17 @@ describe('InterviewService', () => {
     const req = httpMock.expectOne('https://localhost:7215/api/interviews');
     expect(req.request.method).toBe('GET');
     req.flush(mockInterviews); 
+  });
+
+  it('should fetch interview by ID via GET', () => {
+    const interviewId = 1;
+
+    service.getInterviewById(interviewId).subscribe((data) => {
+      expect(data).toEqual(mockInterviewById);
+    });
+
+    const req = httpMock.expectOne(`https://localhost:7215/api/interviews/${interviewId}`);
+    expect(req.request.method).toBe('GET');
+    req.flush(mockInterviewById);
   });
 });

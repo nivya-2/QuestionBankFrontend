@@ -2,11 +2,12 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GridModule, KENDO_GRID } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
-import { InterviewService } from '../../services/interview-management/get-all-interviews.service';
+import { InterviewService } from '../../services/interview.service';
 import { Interview } from '../../models/interview.js';
 import { InterviewStatus } from '../../enums/interview-status.enum';
 import { NotificationModule, NotificationService } from '@progress/kendo-angular-notification';
 
+import { Router } from '@angular/router';
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
 
 // Following columns and actions are displayed in the interview table. Data for them will be fetched from GET /api/interviews
@@ -29,6 +30,8 @@ import { NotificationModule, NotificationService } from '@progress/kendo-angular
 export class ListInterview implements OnInit {
   readonly interviewStatus = InterviewStatus;
   private interviewService = inject(InterviewService);
+  private router = inject(Router);
+
   private notificationService = inject(NotificationService);
   interviews: Interview[] = [];
 
@@ -55,7 +58,7 @@ export class ListInterview implements OnInit {
    * @param id - The unique identifier of the interview to view.
    */
   viewInterview(id: number): void {
-    // Logic to navigate to interview details screen
+    this.router.navigate(['/interviews', id]);
   }
 
   /**

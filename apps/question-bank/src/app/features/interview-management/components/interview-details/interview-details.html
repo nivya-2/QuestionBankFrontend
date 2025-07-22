@@ -1,40 +1,65 @@
+@if (interviewForm) {
 <div class="center-box">
-    <div class="flex-space-between">
-        <h3>Interview Details</h3>
-        <div>
-            <button>Edit</button>
-        </div>
+  <div class="form-header">
+    <h3>Interview Details</h3>
+    <button kendoButton id="edit-button" (click)="toggleEdit()">
+      {{ isEdit ? 'Cancel' : 'Edit' }}
+    </button>
+  </div>
+
+  <form [formGroup]="interviewForm">
+    <div class="form-row">
+      <kendo-label text="Role:" [for]="'role-input'"></kendo-label>
+      <kendo-textbox formControlName="role" id="role-input"></kendo-textbox>
     </div>
 
-    <div class="flex-space-between">
-        <div style="margin-bottom: 10px;">
-            <strong>Role:</strong> Frontend Developer
-        </div>
-        <div style="margin-bottom: 10px;">
-            <strong>Created By:</strong> John Doe
-        </div>
+    <div class="form-row">
+      <kendo-label text="Created By:" [for]="'created-by-input'"></kendo-label>
+      <kendo-textbox
+        formControlName="createdBy"
+        id="created-by-input"
+      ></kendo-textbox>
     </div>
 
-    <div style="margin-bottom: 10px;">
-        <strong>Experience in Years:</strong> 3
+    <div class="form-row">
+      <kendo-label
+        text="Experience (Years):"
+        [for]="'experience-input'"
+      ></kendo-label>
+      <kendo-numerictextbox
+        formControlName="experience"
+        id="experience-input"
+      ></kendo-numerictextbox>
     </div>
 
-    <div class="flex-space-between">
-        <div style="margin-bottom: 10px;">
-            <strong>Skills:</strong>
-            <ul>
-                <li>Angular</li>
-                <li>TypeScript</li>
-                <li>HTML</li>
-            </ul>
-        </div>
-
-        <div style="margin-bottom: 10px;">
-            <strong>Status:</strong> Draft
-        </div>
+    <div class="form-row">
+      <kendo-label text="Skills:" [for]="'skills-input'"></kendo-label>
+      <kendo-multiselect
+        id="skills-input"
+        [data]="allSkills"
+        formControlName="interviewSkills"
+        [disabled]="!isEdit"
+      ></kendo-multiselect>
     </div>
 
-    <div class="bottom-button">
-        <button>Next</button>
+    <div class="form-row">
+      <kendo-label text="Status:" [for]="'status-input'"></kendo-label>
+      <kendo-textbox
+        formControlName="interviewStatus"
+        id="status-input"
+      ></kendo-textbox>
     </div>
+
+    <div class="form-footer">
+      <button
+        kendoButton
+        themeColor="primary"
+        id="next-button"
+        [disabled]="!isEdit"
+      >
+        Next
+      </button>
+    </div>
+  </form>
 </div>
+}

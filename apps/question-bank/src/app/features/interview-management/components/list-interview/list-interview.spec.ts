@@ -5,7 +5,7 @@ import { of, throwError } from 'rxjs';
 import { GridModule } from '@progress/kendo-angular-grid';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { Interview } from '../../models/interview';
-import { InterviewService } from '../../services/interview-management/get-all-interviews.service';
+import { InterviewService } from '../../services/interview.service';
 import { NotificationService } from '@progress/kendo-angular-notification';
 import { provideHttpClient } from '@angular/common/http';
 
