@@ -32,6 +32,22 @@ import { NotificationService } from '@progress/kendo-angular-notification';
 //    a. Next - Navigates to Interview Questions screen for the interview.
 //    b. Edit - To modify the interview details for the selected interview.
 
+// Add Interview
+// Add Interview screen is displayed when the user clicks the 'Add' button on the 
+// List Interview screen to create a new interview record.
+
+// An empty form is displayed with all fields editable. Once filled, the user can save the interview details 
+// via the Save button. On successful save, a confirmation notification is shown.
+
+// Following details are to be provided by the user:
+// 1. Role - Role for the interview.
+// 2. Created By - The name of the person creating the interview.
+// 3. Experience in Years - Experience required for the interview.
+// 4. Skills - Selectable list of skill names to associate with the interview.
+
+// Actions:
+//    a. Save - Saves the newly entered interview data by calling POST /api/interviews.
+
 @Component({
   selector: 'app-interview-details',
   imports: [
