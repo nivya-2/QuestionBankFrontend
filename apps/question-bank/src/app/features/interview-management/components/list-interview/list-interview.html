@@ -1,4 +1,11 @@
 <h3>Interview List</h3>
+<lib-button
+  id="add-interview-btn"
+  label="Add"
+  variant="primary"
+  [disabled]="isSaving"
+  (clicked)="handleSave()"
+></lib-button>
 
 <kendo-grid [data]="interviews" [resizable]="true" id="interview-grid">
   <kendo-grid-column field="id" title="S.No" [width]="80">
@@ -53,7 +60,7 @@
       </div>
     </ng-template>
   </kendo-grid-column>
-  
+
   <ng-template kendoGridNoRecordsTemplate>
     <div id="no-interviews-message">
       No interviews available. Please add an interview.
