@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './button.html',
   styleUrls: ['./button.css'],
 })
-export class Button {
+export class ButtonComponent {
   /**
    * Text to display on the button.
    */

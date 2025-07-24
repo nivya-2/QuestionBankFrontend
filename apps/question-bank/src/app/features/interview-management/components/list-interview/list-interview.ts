@@ -5,8 +5,11 @@ import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { InterviewService } from '../../services/interview.service';
 import { Interview } from '../../models/interview.js';
 import { InterviewStatus } from '../../enums/interview-status.enum';
-import { NotificationModule, NotificationService } from '@progress/kendo-angular-notification';
-import { Button } from '@question-bank-workspace/ui';
+import {
+  NotificationModule,
+  NotificationService,
+} from '@progress/kendo-angular-notification';
+import { ButtonComponent } from '@question-bank-workspace/ui';
 
 import { Router } from '@angular/router';
 // List Interview screen is displayed when user navigates to '/interviews' route or is redirected here from the root path.
@@ -24,7 +27,14 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-list-interview',
   standalone: true,
-  imports: [CommonModule, GridModule, ButtonModule, KENDO_GRID,NotificationModule,Button],
+  imports: [
+    CommonModule,
+    GridModule,
+    ButtonModule,
+    KENDO_GRID,
+    NotificationModule,
+    ButtonComponent,
+  ],
   templateUrl: './list-interview.html',
   styleUrl: './list-interview.css',
 })
@@ -50,7 +60,7 @@ export class ListInterview implements OnInit {
           type: { style: 'error', icon: true },
           hideAfter: 5000,
         });
-      },      
+      },
     });
   }
 

@@ -1,5 +1,6 @@
 <h3>Interview List</h3>
 <lib-button
+  id="add-interview-btn"
   label="Add"
   variant="primary"
   [disabled]="isSaving"
@@ -59,7 +60,7 @@
       </div>
     </ng-template>
   </kendo-grid-column>
-  
+
   <ng-template kendoGridNoRecordsTemplate>
     <div id="no-interviews-message">
       No interviews available. Please add an interview.
